@@ -11,11 +11,15 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::table('attendances', function (Blueprint $table) {
+        if (!Schema::hasColumn('attendances', 'approved_at')) {
 
-            $table->timestamp('approved_at')->nullable();
+            Schema::table('attendances', function (Blueprint $table) {
 
-        });
+                $table->timestamp('approved_at')->nullable();
+
+            });
+
+        }
     }
 
     /**
@@ -23,14 +27,14 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::table('attendances', function (Blueprint $table) {
+        if (Schema::hasColumn('attendances', 'approved_at')) {
 
-            $table->dropColumn([
-                'check_out',
-                'is_approved',
-                'approved_at'
-            ]);
+            Schema::table('attendances', function (Blueprint $table) {
 
-        });
+                $table->dropColumn('approved_at');
+
+            });
+
+        }
     }
 };
