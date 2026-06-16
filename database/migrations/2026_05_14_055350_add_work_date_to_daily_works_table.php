@@ -6,23 +6,21 @@ use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
 {
-    /**
-     * Run the migrations.
-     */
     public function up(): void
     {
-        Schema::table('daily_works', function (Blueprint $table) {
-            $table->date('work_date')->nullable()->after('hours_worked');
-        });
+        if (!Schema::hasColumn('daily_works', 'work_date')) {
+            Schema::table('daily_works', function (Blueprint $table) {
+                $table->date('work_date')->nullable();
+            });
+        }
     }
 
-    /**
-     * Reverse the migrations.
-     */
     public function down(): void
     {
-        Schema::table('daily_works', function (Blueprint $table) {
-            $table->dropColumn('work_date');
-        });
+        if (Schema::hasColumn('daily_works', 'work_date')) {
+            Schema::table('daily_works', function (Blueprint $table) {
+                $table->dropColumn('work_date');
+            });
+        }
     }
 };

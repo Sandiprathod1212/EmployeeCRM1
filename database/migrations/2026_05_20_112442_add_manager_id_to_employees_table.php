@@ -6,29 +6,21 @@ use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
 {
-    /**
-     * Run the migrations.
-     */
     public function up(): void
     {
-        Schema::table('employees', function (Blueprint $table) {
-
-            $table->unsignedBigInteger('manager_id')
-                ->nullable()
-                ->after('id');
-
-        });
+        if (!Schema::hasColumn('employees', 'manager_id')) {
+            Schema::table('employees', function (Blueprint $table) {
+                $table->unsignedBigInteger('manager_id')->nullable();
+            });
+        }
     }
 
-    /**
-     * Reverse the migrations.
-     */
     public function down(): void
     {
-        Schema::table('employees', function (Blueprint $table) {
-
-            $table->dropColumn('manager_id');
-
-        });
+        if (Schema::hasColumn('employees', 'manager_id')) {
+            Schema::table('employees', function (Blueprint $table) {
+                $table->dropColumn('manager_id');
+            });
+        }
     }
 };

@@ -6,31 +6,14 @@ use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
 {
-    /**
-     * Run the migrations.
-     */
     public function up(): void
     {
-        Schema::table('leaves', function (Blueprint $table) {
-
-            $table->foreign('employee_id')
-                ->references('id')
-                ->on('employees')
-                ->onDelete('cascade');
-
-        });
+        // Foreign key already handled in create_leaves_table migration.
+        // Kept as no-op to avoid SQLite/Railway migration crash.
     }
 
-    /**
-     * Reverse the migrations.
-     */
     public function down(): void
     {
-
-        Schema::table('leaves', function (Blueprint $table) {
-
-            $table->dropForeign(['employee_id']);
-
-        });
+        // No-op.
     }
 };

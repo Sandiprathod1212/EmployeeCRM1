@@ -6,23 +6,21 @@ use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
 {
-    /**
-     * Run the migrations.
-     */
     public function up(): void
     {
-        Schema::table('performances', function (Blueprint $table) {
-            $table->string('rating_grade')->nullable()->after('final_rating');
-        });
+        if (!Schema::hasColumn('performances', 'rating_grade')) {
+            Schema::table('performances', function (Blueprint $table) {
+                $table->string('rating_grade')->nullable();
+            });
+        }
     }
 
-    /**
-     * Reverse the migrations.
-     */
     public function down(): void
     {
-        Schema::table('performances', function (Blueprint $table) {
-            $table->dropColumn('rating_grade');
-        });
+        if (Schema::hasColumn('performances', 'rating_grade')) {
+            Schema::table('performances', function (Blueprint $table) {
+                $table->dropColumn('rating_grade');
+            });
+        }
     }
 };
