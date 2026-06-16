@@ -29,7 +29,7 @@ return new class extends Migration
 
             $table->decimal('net_salary', 10, 2);
 
-            $table->string('salary_month');
+
 
             $table->string('payment_status')
                 ->default('Pending');
