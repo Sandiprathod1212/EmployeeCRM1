@@ -1,3 +1,37 @@
+
+
+console.log('confirm.js loaded');
+
+document.addEventListener('click', function (e) {
+    const btn = e.target.closest('#mobileMenuBtn');
+
+    if (!btn) return;
+
+    console.log('mobile menu clicked');
+
+    e.preventDefault();
+    e.stopPropagation();
+
+    const sidebar = document.getElementById('adminSidebar') || document.querySelector('.sidebar');
+    const overlay = document.getElementById('mobileSidebarOverlay');
+
+    if (!sidebar) {
+        console.log('sidebar not found');
+        return;
+    }
+
+    sidebar.classList.toggle('active');
+    sidebar.classList.toggle('show');
+
+    if (overlay) {
+        overlay.classList.toggle('active');
+        overlay.classList.toggle('show');
+    }
+
+    document.body.classList.toggle('sidebar-open');
+});
+
+
 import Swal from 'sweetalert2';
 
 document.addEventListener('DOMContentLoaded', function () {
