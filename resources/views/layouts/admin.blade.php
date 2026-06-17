@@ -8,7 +8,7 @@
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
     @vite(['resources/css/app.css', 'resources/js/app.js'])
-    <link rel="stylesheet" href="{{ asset('assets/css/style.css') }}">
+
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
           rel="stylesheet">
 
@@ -208,11 +208,25 @@
                  data-bs-toggle="dropdown"
                  style="cursor:pointer;">
 
-                <img src="https://i.pravatar.cc/40"
-                     class="rounded-circle shadow"
-                     width="45"
-                     height="45">
+                @php
+                    $loginUser = auth()->user();
 
+                    $employeeProfile = \App\Models\Employee::where('user_id', $loginUser->id)->first();
+
+                    if ($loginUser->hasRole('employee') && $employeeProfile && $employeeProfile->photo) {
+                        $profileImage = asset('storage/'.$employeeProfile->photo);
+                    } elseif ($loginUser->photo) {
+                        $profileImage = asset('storage/profile/'.$loginUser->photo);
+                    } else {
+                        $profileImage = asset('assets/images/default-user.png');
+                    }
+                @endphp
+
+                <img src="{{ $profileImage }}"
+                     class="rounded-circle shadow"
+                     width="65"
+                     height="65"
+                     style="object-fit: cover;">
                 <div>
 
                     <h6 class="mb-0 fw-bold">

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Panel;
 
 use App\Http\Controllers\Controller;
+use App\Models\Employee;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
@@ -17,16 +18,32 @@ class ProfileController extends Controller
 
     public function updateProfile(Request $request)
     {
-        $request->validate([
-            'name' => 'required|string|max:255',
-            'email' => 'required|email|unique:users,email,' . Auth::id(),
-        ]);
-
         $user = Auth::user();
 
+        $request->validate([
+            'name'  => 'required|string|max:255',
+            'email' => 'required|email|unique:users,email,' . $user->id,
+            'photo' => 'nullable|image|mimes:jpg,jpeg,png,webp|max:2048',
+        ]);
+
+        $photoName = $user->photo;
+
+        // Only Super Admin / HR / Manager can upload profile image
+        if (!$user->hasRole('employee') && $request->hasFile('photo')) {
+
+            $photoName = 'user_' . $user->id . '_' . time() . '.' .
+                $request->photo->getClientOriginalExtension();
+
+            $request->photo->move(
+                storage_path('app/public/profile'),
+                $photoName
+            );
+        }
+
         $user->update([
-            'name' => $request->name,
+            'name'  => $request->name,
             'email' => $request->email,
+            'photo' => $photoName,
         ]);
 
         return back()->with('success', 'Profile updated successfully');

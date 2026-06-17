@@ -3875,7 +3875,40 @@ body{
         gap: 18px;
     }
 }
+.profile-page .profile-photo-panel {
+    background: #f8fafc !important;
+    border: 1px solid #eef2f7 !important;
+    border-radius: 24px !important;
+    padding: 28px !important;
+    text-align: center !important;
+    max-width: 330px !important;
+    height: auto !important;
+}
 
+.profile-page .profile-preview-img {
+    width: 135px !important;
+    height: 135px !important;
+    min-width: 135px !important;
+    max-width: 135px !important;
+    border-radius: 50% !important;
+    object-fit: cover !important;
+    border: 6px solid #fff !important;
+    box-shadow: 0 12px 28px rgba(15, 23, 42, .18);
+    display: block;
+    margin: 0 auto 18px;
+}
+
+.profile-page .profile-photo-panel .profile-input {
+    padding-left: 15px !important;
+    height: 48px !important;
+    border-radius: 16px !important;
+}
+
+@media (max-width: 991px) {
+    .profile-page .profile-photo-panel {
+        margin-bottom: 20px;
+    }
+}
 /*profile End*/
 .employee-logo{
      width:45px!important;

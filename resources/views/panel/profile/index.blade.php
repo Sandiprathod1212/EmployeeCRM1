@@ -62,6 +62,7 @@
         <div class="tab-content">
 
             {{-- PROFILE --}}
+            {{-- PROFILE --}}
             <div class="tab-pane fade {{ session('active_tab') != 'password' ? 'show active' : '' }}"
                  id="profile">
 
@@ -88,66 +89,144 @@
                     <div class="profile-card-body">
 
                         <form action="{{ route('profile.update') }}"
-                              method="POST">
+                              method="POST"
+                              enctype="multipart/form-data">
 
                             @csrf
 
-                            <div class="row g-4">
+                            <div class="row g-4 align-items-start">
 
-                                <div class="col-md-6">
+                                {{-- LEFT PHOTO PANEL --}}
+                                <div class="col-lg-4">
 
-                                    <label class="form-label fw-semibold">
-                                        Name
-                                    </label>
+                                    <div class="profile-photo-panel">
 
-                                    <div class="profile-input-box">
-                                        <i class="bi bi-person"></i>
+                                        @php
+                                            $loginUser = auth()->user();
 
-                                        <input type="text"
-                                               name="name"
-                                               class="form-control profile-input @error('name') is-invalid @enderror"
-                                               value="{{ old('name', auth()->user()->name) }}">
+                                            $employee = \App\Models\Employee::where('user_id', $loginUser->id)->first();
+
+                                            if ($loginUser->hasRole('employee') && $employee && $employee->photo) {
+                                                $profileImage = asset('storage/' . $employee->photo);
+                                            } elseif (!$loginUser->hasRole('employee') && $loginUser->photo) {
+                                                $profileImage = asset('storage/profile/' . $loginUser->photo);
+                                            } else {
+                                                $profileImage = asset('assets/images/default-user.png');
+                                            }
+                                        @endphp
+
+                                        <div class="profile-photo-box">
+
+                                            <img src="{{ $profileImage }}"
+                                                 class="profile-preview-img"
+                                                 alt="Profile Photo">
+
+                                        </div>
+
+                                        <h5 class="fw-bold mt-3 mb-1">
+                                            {{ $loginUser->name }}
+                                        </h5>
+
+                                        <small class="text-muted d-block mb-3">
+                                            {{ ucfirst($loginUser->getRoleNames()->first()) }}
+                                        </small>
+
+                                        @if($loginUser->hasRole('employee'))
+
+                                            <div class="alert alert-info rounded-4 py-2 px-3 mb-0 small">
+                                                Employee photo is managed from Employee Profile.
+                                            </div>
+
+                                        @else
+
+                                            <label class="form-label fw-semibold d-block mt-3">
+                                                Upload Profile Photo
+                                            </label>
+
+                                            <input type="file"
+                                                   name="photo"
+                                                   class="form-control profile-input @error('photo') is-invalid @enderror"
+                                                   accept="image/*">
+
+                                            <small class="text-muted d-block mt-2">
+                                                JPG, PNG, JPEG or WEBP. Max 2MB.
+                                            </small>
+
+                                            @error('photo')
+                                            <div class="invalid-feedback d-block">
+                                                {{ $message }}
+                                            </div>
+                                            @enderror
+
+                                        @endif
+
                                     </div>
-
-                                    @error('name')
-                                    <div class="invalid-feedback d-block">
-                                        {{ $message }}
-                                    </div>
-                                    @enderror
 
                                 </div>
 
-                                <div class="col-md-6">
+                                {{-- RIGHT FORM PANEL --}}
+                                <div class="col-lg-8">
 
-                                    <label class="form-label fw-semibold">
-                                        Email
-                                    </label>
+                                    <div class="row g-4">
 
-                                    <div class="profile-input-box">
-                                        <i class="bi bi-envelope"></i>
+                                        <div class="col-md-6">
 
-                                        <input type="email"
-                                               name="email"
-                                               class="form-control profile-input @error('email') is-invalid @enderror"
-                                               value="{{ old('email', auth()->user()->email) }}">
+                                            <label class="form-label fw-semibold">
+                                                Name
+                                            </label>
+
+                                            <div class="profile-input-box">
+                                                <i class="bi bi-person"></i>
+
+                                                <input type="text"
+                                                       name="name"
+                                                       class="form-control profile-input @error('name') is-invalid @enderror"
+                                                       value="{{ old('name', auth()->user()->name) }}">
+                                            </div>
+
+                                            @error('name')
+                                            <div class="invalid-feedback d-block">
+                                                {{ $message }}
+                                            </div>
+                                            @enderror
+
+                                        </div>
+
+                                        <div class="col-md-6">
+
+                                            <label class="form-label fw-semibold">
+                                                Email
+                                            </label>
+
+                                            <div class="profile-input-box">
+                                                <i class="bi bi-envelope"></i>
+
+                                                <input type="email"
+                                                       name="email"
+                                                       class="form-control profile-input @error('email') is-invalid @enderror"
+                                                       value="{{ old('email', auth()->user()->email) }}">
+                                            </div>
+
+                                            @error('email')
+                                            <div class="invalid-feedback d-block">
+                                                {{ $message }}
+                                            </div>
+                                            @enderror
+
+                                        </div>
+
                                     </div>
 
-                                    @error('email')
-                                    <div class="invalid-feedback d-block">
-                                        {{ $message }}
+                                    <div class="profile-actions mt-5">
+
+                                        <button class="btn btn-primary rounded-pill px-5 py-3 fw-semibold">
+                                            <i class="bi bi-check-circle me-1"></i>
+                                            Update Profile
+                                        </button>
+
                                     </div>
-                                    @enderror
 
                                 </div>
-
-                            </div>
-
-                            <div class="profile-actions mt-5">
-
-                                <button class="btn btn-primary rounded-pill px-5 py-3 fw-semibold">
-                                    <i class="bi bi-check-circle me-1"></i>
-                                    Update Profile
-                                </button>
 
                             </div>
 
