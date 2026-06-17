@@ -5,3 +5,46 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+
+/* Tablet */
+@media (max-width: 991px) {
+    .login-wrapper {
+        flex-direction: column;
+        min-height: auto;
+    }
+
+    .login-left,
+    .login-right {
+        width: 100%;
+        padding: 40px 25px;
+    }
+}
+
+/* Mobile */
+@media (max-width: 576px) {
+    .mainloginpage {
+        padding: 15px;
+    }
+
+    .login-wrapper {
+        border-radius: 18px;
+    }
+
+    .login-left {
+        display: none;
+    }
+
+    .login-right {
+        padding: 30px 20px;
+    }
+
+    .form-title {
+        font-size: 24px;
+    }
+
+    .buttonlogin {
+        height: 48px;
+        font-size: 15px;
+    }
+}
