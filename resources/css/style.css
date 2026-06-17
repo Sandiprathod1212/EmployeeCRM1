@@ -3924,3 +3924,400 @@ body{
         padding: 7px 10px;
     }
 }
+
+
+/* =========================================================
+   PROFESSIONAL RESPONSIVE ADMIN PANEL - SAFE UI ONLY
+   Logic, routes, controllers and database code are untouched.
+   ========================================================= */
+
+:root {
+    --crm-sidebar-width: 260px;
+    --crm-primary: #2563eb;
+    --crm-dark: #111827;
+    --crm-body: #f4f6f9;
+    --crm-border: #e5e7eb;
+    --crm-shadow: 0 16px 40px rgba(15, 23, 42, 0.10);
+}
+
+html, body {
+    max-width: 100%;
+    overflow-x: hidden;
+}
+
+body.sidebar-open {
+    overflow: hidden;
+}
+
+.mainpage {
+    background: var(--crm-body);
+}
+
+.sidebar {
+    width: var(--crm-sidebar-width);
+    min-height: 100vh;
+    height: 100vh;
+    overflow-y: auto;
+    overflow-x: hidden;
+    background: linear-gradient(180deg, #0f172a 0%, #111827 52%, #1f2937 100%);
+    position: fixed;
+    left: 0;
+    top: 0;
+    color: #fff;
+    z-index: 1050;
+    transition: transform .28s ease, left .28s ease, box-shadow .28s ease;
+    scrollbar-width: thin;
+}
+
+.sidebar::-webkit-scrollbar {
+    width: 6px;
+}
+
+.sidebar::-webkit-scrollbar-thumb {
+    background: rgba(255,255,255,.25);
+    border-radius: 999px;
+}
+
+.sidebar-logo {
+    min-height: 72px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 20px 22px;
+    font-size: 20px;
+    font-weight: 800;
+    letter-spacing: .2px;
+}
+
+.sidebar a {
+    min-height: 44px;
+    font-size: 14px;
+    transition: .22s ease;
+}
+
+.sidebar a i {
+    min-width: 20px;
+    text-align: center;
+    font-size: 17px;
+}
+
+.main-content {
+    margin-left: var(--crm-sidebar-width);
+    min-height: 100vh;
+    width: calc(100% - var(--crm-sidebar-width));
+    transition: margin-left .28s ease, width .28s ease;
+}
+
+.top-navbar {
+    position: sticky;
+    top: 0;
+    z-index: 990;
+    min-height: 72px;
+    border-bottom: 1px solid var(--crm-border);
+    gap: 16px;
+}
+
+.top-search {
+    width: 50%;
+    max-width: 620px;
+}
+
+.mobile-menu-btn {
+    display: none;
+    border: 0;
+    outline: 0;
+    width: 44px;
+    height: 44px;
+    border-radius: 14px;
+    background: var(--crm-dark);
+    color: #fff;
+    align-items: center;
+    justify-content: center;
+    font-size: 26px;
+    box-shadow: 0 10px 24px rgba(17, 24, 39, .20);
+    flex: 0 0 auto;
+}
+
+.mobile-sidebar-overlay {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(15, 23, 42, .55);
+    backdrop-filter: blur(2px);
+    z-index: 1040;
+}
+
+.mobile-sidebar-overlay.active,
+.mobile-sidebar-overlay.show {
+    display: block;
+}
+
+.content-wrapper {
+    padding: 28px;
+    max-width: 100%;
+}
+
+img, svg, video, canvas {
+    max-width: 100%;
+}
+
+.card,
+.modal-content,
+.dropdown-menu,
+.table-card,
+.salary-table-card,
+.report-table-card {
+    max-width: 100%;
+}
+
+/* Let desktop tables remain normal, mobile converts to beautiful cards */
+.table-responsive {
+    max-width: 100%;
+}
+
+.professional-responsive-table {
+    width: 100%;
+}
+
+.professional-responsive-table th,
+.professional-responsive-table td {
+    vertical-align: middle;
+}
+
+/* Tablet */
+@media (max-width: 991.98px) {
+    .mobile-menu-btn {
+        display: inline-flex;
+    }
+
+    .sidebar {
+        left: 0 !important;
+        transform: translateX(-105%);
+        width: min(84vw, var(--crm-sidebar-width));
+        box-shadow: none;
+    }
+
+    .sidebar.active,
+    .sidebar.show {
+        transform: translateX(0);
+        box-shadow: var(--crm-shadow);
+    }
+
+    .main-content {
+        margin-left: 0 !important;
+        width: 100% !important;
+        padding: 0 !important;
+    }
+
+    .top-navbar {
+        padding-left: 16px !important;
+        padding-right: 16px !important;
+        flex-wrap: nowrap;
+    }
+
+    .top-search {
+        width: min(52vw, 520px);
+        flex: 1 1 auto;
+    }
+
+    .content-wrapper {
+        padding: 18px !important;
+    }
+
+    .row {
+        row-gap: 18px;
+    }
+
+    .modal-dialog {
+        margin: 14px;
+    }
+}
+
+/* Mobile premium table card view - no horizontal scroll */
+@media (max-width: 767.98px) {
+    .table-responsive {
+        overflow-x: visible !important;
+    }
+
+    .professional-responsive-table,
+    .professional-responsive-table thead,
+    .professional-responsive-table tbody,
+    .professional-responsive-table th,
+    .professional-responsive-table td,
+    .professional-responsive-table tr {
+        display: block;
+        width: 100% !important;
+    }
+
+    .professional-responsive-table thead {
+        display: none !important;
+    }
+
+    .professional-responsive-table tbody tr {
+        background: #fff;
+        border: 1px solid var(--crm-border);
+        border-radius: 20px;
+        margin-bottom: 16px;
+        padding: 14px;
+        box-shadow: 0 10px 28px rgba(15, 23, 42, .075);
+    }
+
+    .professional-responsive-table tbody td {
+        border: 0 !important;
+        border-bottom: 1px dashed #e5e7eb !important;
+        padding: 10px 4px !important;
+        min-height: 40px;
+        display: flex !important;
+        justify-content: space-between;
+        align-items: flex-start;
+        gap: 14px;
+        text-align: right !important;
+        white-space: normal !important;
+        word-break: break-word;
+        font-size: 14px;
+    }
+
+    .professional-responsive-table tbody td:last-child {
+        border-bottom: 0 !important;
+    }
+
+    .professional-responsive-table tbody td::before {
+        content: attr(data-label);
+        min-width: 38%;
+        max-width: 48%;
+        text-align: left;
+        color: #475569;
+        font-weight: 800;
+        font-size: 12px;
+        text-transform: uppercase;
+        letter-spacing: .04em;
+        flex: 0 0 auto;
+    }
+
+    .professional-responsive-table tbody td:empty {
+        display: none !important;
+    }
+
+    .professional-responsive-table tbody td .btn,
+    .professional-responsive-table tbody td form,
+    .professional-responsive-table tbody td .badge {
+        margin-left: 4px;
+    }
+
+    .professional-responsive-table tbody td:last-child,
+    .professional-responsive-table tbody td[data-label*="Action"],
+    .professional-responsive-table tbody td[data-label*="Actions"] {
+        justify-content: flex-end;
+        flex-wrap: wrap;
+        text-align: right !important;
+        gap: 8px;
+    }
+
+    .professional-responsive-table tbody td:last-child::before,
+    .professional-responsive-table tbody td[data-label*="Action"]::before,
+    .professional-responsive-table tbody td[data-label*="Actions"]::before {
+        display: none;
+    }
+}
+
+/* Small mobile */
+@media (max-width: 575.98px) {
+    .top-navbar {
+        min-height: auto;
+        padding-top: 12px !important;
+        padding-bottom: 12px !important;
+        align-items: flex-start !important;
+        flex-wrap: wrap;
+    }
+
+    .top-search {
+        order: 3;
+        width: 100% !important;
+        flex: 0 0 100%;
+    }
+
+    .top-navbar .dropdown {
+        margin-left: auto;
+    }
+
+    .top-navbar img {
+        width: 38px !important;
+        height: 38px !important;
+    }
+
+    .top-navbar h6,
+    .top-navbar small {
+        display: none;
+    }
+
+    .content-wrapper {
+        padding: 14px !important;
+    }
+
+    h1, .h1 { font-size: 1.65rem; }
+    h2, .h2 { font-size: 1.45rem; }
+    h3, .h3 { font-size: 1.25rem; }
+    h4, .h4 { font-size: 1.12rem; }
+
+    .card-body {
+        padding: 16px !important;
+    }
+
+    .btn {
+        white-space: normal;
+    }
+
+    .d-flex.justify-content-between,
+    .d-flex.align-items-center.justify-content-between {
+        gap: 12px;
+    }
+
+    .page-header,
+    .employee-header,
+    .attendance-header,
+    .salary-header,
+    .leave-header,
+    .performance-header,
+    .report-header {
+        flex-direction: column !important;
+        align-items: flex-start !important;
+        gap: 14px !important;
+    }
+
+    .page-header .btn,
+    .employee-header .btn,
+    .attendance-header .btn,
+    .salary-header .btn,
+    .leave-header .btn,
+    .performance-header .btn,
+    .report-header .btn {
+        width: 100%;
+        justify-content: center;
+    }
+
+    input,
+    select,
+    textarea,
+    .form-control,
+    .form-select {
+        font-size: 15px !important;
+    }
+}
+
+/* Extra tiny screens */
+@media (max-width: 380px) {
+    .sidebar {
+        width: 88vw;
+    }
+
+    .professional-responsive-table tbody td {
+        display: block !important;
+        text-align: left !important;
+    }
+
+    .professional-responsive-table tbody td::before {
+        display: block;
+        max-width: 100%;
+        margin-bottom: 4px;
+    }
+}

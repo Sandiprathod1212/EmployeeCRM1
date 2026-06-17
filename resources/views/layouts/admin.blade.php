@@ -19,7 +19,9 @@
 
 <body class="mainpage">
 
-<div class="sidebar d-flex flex-column justify-content-between">
+<div class="mobile-sidebar-overlay" id="mobileSidebarOverlay"></div>
+
+<div class="sidebar d-flex flex-column justify-content-between" id="adminSidebar">
 
     <div>
         <div class="sidebar-logo">
@@ -173,8 +175,13 @@
     <!-- TOP NAVBAR -->
     <div class="top-navbar bg-white shadow-sm px-4 py-3 d-flex justify-content-between align-items-center">
 
+        <!-- Mobile Menu -->
+        <button type="button" class="mobile-menu-btn" id="mobileMenuBtn" aria-label="Open menu">
+            <i class="bi bi-list"></i>
+        </button>
+
         <!-- Search -->
-        <div class="w-50 position-relative">
+        <div class="top-search position-relative">
 
             <div class="input-group">
         <span class="input-group-text bg-white border-end-0">
