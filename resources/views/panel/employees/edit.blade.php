@@ -49,7 +49,7 @@
 
                     <div class="current-photo-box">
                         @if($employee->photo)
-                            <img src="{{ asset('storage/' . $employee->photo) }}"
+                            <img src="{{ $employee->photo }}"
                                  class="current-photo-img">
                         @else
                             <div class="current-photo-initial">
@@ -174,7 +174,7 @@
 
                             <div class="photo-preview-card">
                                 @if($employee->photo)
-                                    <img src="{{ asset('storage/' . $employee->photo) }}"
+                                    <img src="{{ $employee->photo }}"
                                          class="photo-preview-img">
                                 @else
                                     <span class="text-muted">No photo</span>

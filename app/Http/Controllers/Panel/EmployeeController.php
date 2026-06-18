@@ -8,9 +8,32 @@ use App\Models\Employee;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Maatwebsite\Excel\Facades\Excel;
+use Cloudinary\Cloudinary;
 
 class EmployeeController extends Controller
 {
+    private function uploadToCloudinary($file, string $folder = 'employee-crm/employees'): string
+    {
+        $cloudinary = new Cloudinary([
+            'cloud' => [
+                'cloud_name' => config('services.cloudinary.cloud_name'),
+                'api_key'    => config('services.cloudinary.api_key'),
+                'api_secret' => config('services.cloudinary.api_secret'),
+            ],
+        ]);
+
+        $uploaded = $cloudinary->uploadApi()->upload(
+            $file->getRealPath(),
+            [
+                'folder' => $folder,
+                'public_id' => 'employee_' . time() . '_' . uniqid(),
+                'overwrite' => true,
+            ]
+        );
+
+        return $uploaded['secure_url'];
+    }
+
     public function index()
     {
         $user = Auth::user();
@@ -71,8 +94,7 @@ class EmployeeController extends Controller
         $imageName = null;
 
         if ($request->hasFile('photo')) {
-            $imageName = time() . '.' . $request->photo->extension();
-            $request->photo->move(storage_path('app/public'), $imageName);
+            $imageName = $this->uploadToCloudinary($request->file('photo'));
         }
 
         Employee::create([
@@ -136,8 +158,7 @@ class EmployeeController extends Controller
         $imageName = $employee->photo;
 
         if ($request->hasFile('photo')) {
-            $imageName = time() . '.' . $request->photo->extension();
-            $request->photo->move(storage_path('app/public'), $imageName);
+            $imageName = $this->uploadToCloudinary($request->file('photo'));
         }
 
         $employee->update([
