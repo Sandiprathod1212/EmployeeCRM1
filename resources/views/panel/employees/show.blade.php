@@ -42,7 +42,7 @@
                     <div class="profile-content text-center">
 
                         @if($employee->photo)
-                            <img src="{{ asset('storage/' . $employee->photo) }}"
+                            <img src="{{ $employee->photo }}"
                                  class="profile-photo">
                         @else
                             <div class="profile-initial">

@@ -118,7 +118,7 @@
 
                             <td>
                                 @if($employee->photo)
-                                    <img src="{{ asset('storage/' . $employee->photo) }}"
+                                    <img src="{{ $employee->photo }}"
                                          class="employee-avatar-img">
                                 @else
                                     <div class="employee-avatar-text">
