@@ -228,10 +228,8 @@ class EmployeeController extends Controller
                 'type' => 'Employee',
 
                 'url' => route('employees.show', $employee->id),
-
             ]);
         }
-
         return response()->json($results->values());
     }
 }
