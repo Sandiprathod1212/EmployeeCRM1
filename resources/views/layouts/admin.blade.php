@@ -209,24 +209,27 @@
                  style="cursor:pointer;">
 
                 @php
-                    $loginUser = auth()->user();
+                    $employee = \App\Models\Employee::where('user_id', auth()->id())->first();
 
-                    $employeeProfile = \App\Models\Employee::where('user_id', $loginUser->id)->first();
-
-                    if ($loginUser->hasRole('employee') && $employeeProfile && $employeeProfile->photo) {
-                        $profileImage = asset('storage/'.$employeeProfile->photo);
-                    } elseif ($loginUser->photo) {
-                        $profileImage = asset('storage/profile/'.$loginUser->photo);
-                    } else {
-                        $profileImage = asset('assets/images/default-user.png');
+                    if(auth()->user()->hasRole('employee'))
+                    {
+                        $profileImage = $employee && $employee->photo
+                            ? asset('storage/'.$employee->photo)
+                            : asset('assets/images/default-user.png');
+                    }
+                    else
+                    {
+                        $profileImage = auth()->user()->photo
+                            ? asset('storage/profile/'.auth()->user()->photo)
+                            : asset('assets/images/default-user.png');
                     }
                 @endphp
 
                 <img src="{{ $profileImage }}"
                      class="rounded-circle shadow"
-                     width="65"
-                     height="65"
-                     style="object-fit: cover;">
+                     width="45"
+                     height="45"
+                     style="object-fit:cover">
                 <div>
 
                     <h6 class="mb-0 fw-bold">

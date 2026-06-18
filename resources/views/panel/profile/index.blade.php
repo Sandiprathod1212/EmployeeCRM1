@@ -119,7 +119,10 @@
 
                                             <img src="{{ $profileImage }}"
                                                  class="profile-preview-img"
-                                                 alt="Profile Photo">
+                                                 alt="Profile Photo"
+                                                 width="135"
+                                                 height="135"
+                                                 style="width:135px;height:135px;object-fit:cover;border-radius:50%;">
 
                                         </div>
 
@@ -131,34 +134,24 @@
                                             {{ ucfirst($loginUser->getRoleNames()->first()) }}
                                         </small>
 
-                                        @if($loginUser->hasRole('employee'))
+                                        <label class="form-label fw-semibold d-block mt-3">
+                                            Upload Profile Photo
+                                        </label>
 
-                                            <div class="alert alert-info rounded-4 py-2 px-3 mb-0 small">
-                                                Employee photo is managed from Employee Profile.
-                                            </div>
+                                        <input type="file"
+                                               name="photo"
+                                               class="form-control profile-input @error('photo') is-invalid @enderror"
+                                               accept="image/*">
 
-                                        @else
+                                        <small class="text-muted d-block mt-2">
+                                            JPG, PNG, JPEG or WEBP. Max 2MB.
+                                        </small>
 
-                                            <label class="form-label fw-semibold d-block mt-3">
-                                                Upload Profile Photo
-                                            </label>
-
-                                            <input type="file"
-                                                   name="photo"
-                                                   class="form-control profile-input @error('photo') is-invalid @enderror"
-                                                   accept="image/*">
-
-                                            <small class="text-muted d-block mt-2">
-                                                JPG, PNG, JPEG or WEBP. Max 2MB.
-                                            </small>
-
-                                            @error('photo')
-                                            <div class="invalid-feedback d-block">
-                                                {{ $message }}
-                                            </div>
-                                            @enderror
-
-                                        @endif
+                                        @error('photo')
+                                        <div class="invalid-feedback d-block">
+                                            {{ $message }}
+                                        </div>
+                                        @enderror
 
                                     </div>
 

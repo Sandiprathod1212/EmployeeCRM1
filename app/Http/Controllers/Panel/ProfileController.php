@@ -18,32 +18,50 @@ class ProfileController extends Controller
 
     public function updateProfile(Request $request)
     {
-        $user = Auth::user();
-
         $request->validate([
             'name'  => 'required|string|max:255',
-            'email' => 'required|email|unique:users,email,' . $user->id,
+            'email' => 'required|email|unique:users,email,' . Auth::id(),
             'photo' => 'nullable|image|mimes:jpg,jpeg,png,webp|max:2048',
         ]);
 
-        $photoName = $user->photo;
+        $user = Auth::user();
 
-        // Only Super Admin / HR / Manager can upload profile image
-        if (!$user->hasRole('employee') && $request->hasFile('photo')) {
+        // Employee record
+        $employee = \App\Models\Employee::where('user_id', $user->id)->first();
 
-            $photoName = 'user_' . $user->id . '_' . time() . '.' .
-                $request->photo->getClientOriginalExtension();
+        if ($request->hasFile('photo')) {
 
-            $request->photo->move(
-                storage_path('app/public/profile'),
-                $photoName
-            );
+            $photoName = time().'_'.$user->id.'.'.$request->photo->extension();
+
+            // Employee photo
+            if ($user->hasRole('employee') && $employee) {
+
+                $request->photo->move(
+                    storage_path('app/public'),
+                    $photoName
+                );
+
+                $employee->update([
+                    'photo' => $photoName
+                ]);
+            }
+            else {
+
+                // Admin / HR / Manager photo
+                $request->photo->move(
+                    storage_path('app/public/profile'),
+                    $photoName
+                );
+
+                $user->update([
+                    'photo' => $photoName
+                ]);
+            }
         }
 
         $user->update([
-            'name'  => $request->name,
+            'name' => $request->name,
             'email' => $request->email,
-            'photo' => $photoName,
         ]);
 
         return back()->with('success', 'Profile updated successfully');
