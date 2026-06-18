@@ -229,7 +229,7 @@
                      class="rounded-circle shadow"
                      width="45"
                      height="45"
-                     style="object-fit:cover">
+                     style="object-fit:cover;">
                 <div>
 
                     <h6 class="mb-0 fw-bold">

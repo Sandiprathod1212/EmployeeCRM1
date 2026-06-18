@@ -8,6 +8,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
+use Cloudinary\Cloudinary;
 
 class ProfileController extends Controller
 {
@@ -18,49 +19,54 @@ class ProfileController extends Controller
 
     public function updateProfile(Request $request)
     {
+        $user = Auth::user();
+
         $request->validate([
             'name'  => 'required|string|max:255',
-            'email' => 'required|email|unique:users,email,' . Auth::id(),
+            'email' => 'required|email|unique:users,email,' . $user->id,
             'photo' => 'nullable|image|mimes:jpg,jpeg,png,webp|max:2048',
         ]);
 
-        $user = Auth::user();
-
-        // Employee record
-        $employee = \App\Models\Employee::where('user_id', $user->id)->first();
-
         if ($request->hasFile('photo')) {
 
-            $photoName = time().'_'.$user->id.'.'.$request->photo->extension();
 
-            // Employee photo
-            if ($user->hasRole('employee') && $employee) {
 
-                $request->photo->move(
-                    storage_path('app/public'),
-                    $photoName
-                );
+            $cloudinary = new Cloudinary([
+                'cloud' => [
+                    'cloud_name' => config('services.cloudinary.cloud_name'),
+                    'api_key'    => config('services.cloudinary.api_key'),
+                    'api_secret' => config('services.cloudinary.api_secret'),
+                ],
+            ]);
 
-                $employee->update([
-                    'photo' => $photoName
-                ]);
-            }
-            else {
+            $uploadedFile = $cloudinary->uploadApi()->upload(
+                $request->file('photo')->getRealPath(),
+                [
+                    'folder' => 'employee-crm/profile',
+                    'public_id' => 'user_' . $user->id . '_' . time(),
+                    'overwrite' => true,
+                ]
+            );
 
-                // Admin / HR / Manager photo
-                $request->photo->move(
-                    storage_path('app/public/profile'),
-                    $photoName
-                );
+            $photoUrl = $uploadedFile['secure_url'];
 
+            if ($user->hasRole('employee')) {
+                $employee = Employee::where('user_id', $user->id)->first();
+
+                if ($employee) {
+                    $employee->update([
+                        'photo' => $photoUrl,
+                    ]);
+                }
+            } else {
                 $user->update([
-                    'photo' => $photoName
+                    'photo' => $photoUrl,
                 ]);
             }
         }
 
         $user->update([
-            'name' => $request->name,
+            'name'  => $request->name,
             'email' => $request->email,
         ]);
 
