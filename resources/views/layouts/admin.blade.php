@@ -209,19 +209,15 @@
                  style="cursor:pointer;">
 
                 @php
-                    $employee = \App\Models\Employee::where('user_id', auth()->id())->first();
+                    $loginUser = auth()->user();
+                    $employee = \App\Models\Employee::where('user_id', $loginUser->id)->first();
 
-                    if(auth()->user()->hasRole('employee'))
-                    {
-                        $profileImage = $employee && $employee->photo
-                            ? asset('storage/'.$employee->photo)
-                            : asset('assets/images/default-user.png');
-                    }
-                    else
-                    {
-                        $profileImage = auth()->user()->photo
-                            ? asset('storage/profile/'.auth()->user()->photo)
-                            : asset('assets/images/default-user.png');
+                    if ($loginUser->hasRole('employee') && $employee && $employee->photo) {
+                        $profileImage = $employee->photo;
+                    } elseif (!$loginUser->hasRole('employee') && $loginUser->photo) {
+                        $profileImage = $loginUser->photo;
+                    } else {
+                        $profileImage = asset('assets/images/default-user.png');
                     }
                 @endphp
 

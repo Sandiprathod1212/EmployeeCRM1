@@ -103,27 +103,24 @@
 
                                         @php
                                             $loginUser = auth()->user();
-
                                             $employee = \App\Models\Employee::where('user_id', $loginUser->id)->first();
 
                                             if ($loginUser->hasRole('employee') && $employee && $employee->photo) {
-                                                $profileImage = asset('storage/' . $employee->photo);
+                                                $profileImage = $employee->photo;
                                             } elseif (!$loginUser->hasRole('employee') && $loginUser->photo) {
-                                                $profileImage = asset('storage/profile/' . $loginUser->photo);
+                                                $profileImage = $loginUser->photo;
                                             } else {
                                                 $profileImage = asset('assets/images/default-user.png');
                                             }
                                         @endphp
 
                                         <div class="profile-photo-box">
-
                                             <img src="{{ $profileImage }}"
                                                  class="profile-preview-img"
                                                  alt="Profile Photo"
                                                  width="135"
                                                  height="135"
                                                  style="width:135px;height:135px;object-fit:cover;border-radius:50%;">
-
                                         </div>
 
                                         <h5 class="fw-bold mt-3 mb-1">

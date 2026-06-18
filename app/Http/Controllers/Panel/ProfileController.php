@@ -29,8 +29,6 @@ class ProfileController extends Controller
 
         if ($request->hasFile('photo')) {
 
-
-
             $cloudinary = new Cloudinary([
                 'cloud' => [
                     'cloud_name' => config('services.cloudinary.cloud_name'),
@@ -39,7 +37,7 @@ class ProfileController extends Controller
                 ],
             ]);
 
-            $uploadedFile = $cloudinary->uploadApi()->upload(
+            $uploaded = $cloudinary->uploadApi()->upload(
                 $request->file('photo')->getRealPath(),
                 [
                     'folder' => 'employee-crm/profile',
@@ -48,16 +46,12 @@ class ProfileController extends Controller
                 ]
             );
 
-            $photoUrl = $uploadedFile['secure_url'];
+            $photoUrl = $uploaded['secure_url'];
 
             if ($user->hasRole('employee')) {
-                $employee = Employee::where('user_id', $user->id)->first();
-
-                if ($employee) {
-                    $employee->update([
-                        'photo' => $photoUrl,
-                    ]);
-                }
+                Employee::where('user_id', $user->id)->update([
+                    'photo' => $photoUrl,
+                ]);
             } else {
                 $user->update([
                     'photo' => $photoUrl,
