@@ -169,7 +169,7 @@
 
                                         <textarea name="task_description"
                                                   rows="5"
-
+                                                  data-error="The task description  field is required."
                                                   placeholder="Enter detailed task description..."
                                                   class="form-control daily-create-input @error('task_description') is-invalid @enderror">{{ old('task_description') }}</textarea>
                                     </div>
