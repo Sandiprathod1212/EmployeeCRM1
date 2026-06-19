@@ -86,7 +86,7 @@ class SalaryController extends Controller
         $request->validateWithBag('salary', [
             'employee_id' => 'required|exists:employees,id',
             'salary_month' => 'required|date_format:Y-m',
-            'basic_salary' => 'required|numeric|min:0',
+            'basic_salary' => 'nullable|numeric|min:0',
             'bonus' => 'nullable|numeric|min:0',
             'deduction' => 'nullable|numeric|min:0',
             'payment_status' => 'required|in:Pending,Paid',

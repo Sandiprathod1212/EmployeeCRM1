@@ -122,16 +122,13 @@
 
                                         <input type="number"
                                                name="basic_salary"
-                                               data-error="The basic salary field is required."
                                                id="basic_salary"
                                                value="{{ old('basic_salary') }}"
                                                readonly
                                                class="form-control salary-create-input @error('basic_salary', 'salary') is-invalid @enderror">
                                     </div>
 
-                                    @error('basic_salary', 'salary')
-                                    <small class="text-danger d-block mt-1">{{ $message }}</small>
-                                    @enderror
+
                                 </div>
 
                                 <div class="col-md-6">
