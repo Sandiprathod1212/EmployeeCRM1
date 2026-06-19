@@ -72,6 +72,7 @@
 
                                 <input type="text"
                                        name="name"
+                                       data-error="The name field is required."
                                        value="{{ old('name') }}"
                                        class="form-control premium-input @error('name') is-invalid @enderror"
                                        placeholder="Enter full name"
@@ -93,6 +94,7 @@
                                 <i class="bi bi-envelope"></i>
 
                                 <input type="email"
+                                       data-error="The email field is required."
                                        name="email"
                                        value="{{ old('email') }}"
                                        class="form-control premium-input @error('email') is-invalid @enderror"
@@ -115,6 +117,7 @@
 
                                 <input type="password"
                                        name="password"
+                                       data-error="The password field is required."
                                        class="form-control premium-input @error('password') is-invalid @enderror"
                                        placeholder="Enter password"
                                        minlength="8">
@@ -134,6 +137,7 @@
                                 <i class="bi bi-shield-lock"></i>
 
                                 <input type="password"
+                                       data-error="The password confirmation field is required."
                                        name="password_confirmation"
                                        class="form-control premium-input"
                                        placeholder="Confirm password"
@@ -150,6 +154,7 @@
                                 <i class="bi bi-person-badge"></i>
 
                                 <select name="role"
+                                        data-error="The role field is required."
                                         class="form-select premium-input @error('role') is-invalid @enderror">
                                     <option value="">Select Role</option>
 

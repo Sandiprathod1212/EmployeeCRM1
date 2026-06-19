@@ -73,6 +73,7 @@
                                         <i class="bi bi-person"></i>
 
                                         <select name="employee_id"
+                                                data-error="The employee field is required."
                                                 class="form-select leave-input @error('employee_id') is-invalid @enderror">
 
                                             <option value="">Select Employee</option>
@@ -102,6 +103,7 @@
                                         <i class="bi bi-calendar-range"></i>
 
                                         <select name="leave_type"
+                                                data-error="The leave type field is required."
                                                 class="form-select leave-input @error('leave_type') is-invalid @enderror">
 
                                             <option value="">Select Leave Type</option>
@@ -135,6 +137,7 @@
                                         <i class="bi bi-calendar-event"></i>
 
                                         <input type="date"
+                                               data-error="The leave date field is required."
                                                name="leave_date"
                                                value="{{ old('leave_date') }}"
                                                class="form-control leave-input @error('leave_date') is-invalid @enderror">
@@ -154,6 +157,7 @@
                                         <i class="bi bi-file-text"></i>
 
                                         <textarea name="reason"
+                                                  data-error="The reason field is required."
                                                   rows="5"
                                                   class="form-control leave-input @error('reason') is-invalid @enderror"
                                                   placeholder="Enter leave reason">{{ old('reason') }}</textarea>

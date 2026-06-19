@@ -60,6 +60,7 @@
                         <form id="salaryForm"
                               action="{{ route('salary.store') }}"
                               method="POST"
+
                               class="create-confirm">
 
                             @csrf
@@ -74,6 +75,7 @@
 
                                         <select name="employee_id"
                                                 id="employee_id"
+                                                data-error="The employee field is required."
                                                 class="form-select salary-create-input @error('employee_id', 'salary') is-invalid @enderror">
 
                                             <option value="">Select Employee</option>
@@ -102,6 +104,7 @@
 
                                         <input type="month"
                                                name="salary_month"
+                                               data-error="The salary month field is required."
                                                value="{{ old('salary_month') }}"
                                                class="form-control salary-create-input @error('salary_month', 'salary') is-invalid @enderror">
                                     </div>
@@ -119,6 +122,7 @@
 
                                         <input type="number"
                                                name="basic_salary"
+                                               data-error="The basic salary field is required."
                                                id="basic_salary"
                                                value="{{ old('basic_salary') }}"
                                                readonly
@@ -165,6 +169,7 @@
                                         <i class="bi bi-credit-card"></i>
 
                                         <select name="payment_status"
+                                                data-error="The payment status field is required."
                                                 class="form-select salary-create-input">
                                             <option value="Pending">Pending</option>
                                             <option value="Paid">Paid</option>
@@ -246,5 +251,26 @@
 
         calculateNetSalary();
     </script>
+    <script>
+        $(document).on('input change', '[data-error]', function () {
 
+            let field = $(this);
+            let value = field.val();
+
+            field.removeClass('is-invalid');
+            field.closest('.col-md-6, .col-12').find('.live-error').remove();
+
+            if (value === null || value === '') {
+
+                field.addClass('is-invalid');
+
+                field.closest('.col-md-6, .col-12').append(
+                    '<small class="text-danger d-block mt-1 live-error">' +
+                    field.data('error') +
+                    '</small>'
+                );
+            }
+
+        });
+    </script>
 @endsection

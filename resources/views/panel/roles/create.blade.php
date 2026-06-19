@@ -48,10 +48,10 @@
 
                         <input type="text"
                                name="name"
+                               data-error="The role name field is required."
                                value="{{ old('name') }}"
                                class="form-control form-control-lg role-input @error('name') is-invalid @enderror"
-                               placeholder="Enter Role Name"
-                               required>
+                               placeholder="Enter Role Name">
 
                         @error('name')
                         <small class="text-danger d-block mt-1">{{ $message }}</small>

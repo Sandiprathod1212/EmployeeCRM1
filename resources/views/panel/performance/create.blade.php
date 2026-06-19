@@ -73,6 +73,7 @@
                                         <i class="bi bi-person"></i>
 
                                         <select name="employee_id"
+                                                data-error="The Employee Name field is required."
                                                 class="form-select performance-input @error('employee_id', 'performance') is-invalid @enderror">
                                             <option value="">Select Employee</option>
 
@@ -97,6 +98,7 @@
                                         <i class="bi bi-calendar-month"></i>
 
                                         <input type="month"
+                                               data-error="The month field is required."
                                                name="month"
                                                value="{{ old('month') }}"
                                                class="form-control performance-input @error('month', 'performance') is-invalid @enderror">
@@ -115,6 +117,7 @@
 
                                         <input type="number"
                                                name="attendance_score"
+                                               data-error="The attendance_score field is required."
                                                id="attendance_score"
                                                value="{{ old('attendance_score') }}"
                                                placeholder="0 - 100"
@@ -134,6 +137,7 @@
 
                                         <input type="number"
                                                name="task_completion_score"
+                                               data-error="The task_completion_score field is required."
                                                id="task_completion_score"
                                                value="{{ old('task_completion_score') }}"
                                                placeholder="0 - 100"
@@ -154,6 +158,7 @@
                                         <input type="number"
                                                name="manager_rating"
                                                id="manager_rating"
+                                               data-error="The manager_rating field is required."
                                                value="{{ old('manager_rating') }}"
                                                min="1"
                                                max="5"
@@ -243,5 +248,30 @@
 
         calculatePerformance();
     </script>
+    <script>
+        $(document).on('input change', '[data-error]', function () {
 
+            let field = $(this);
+            let value = field.val();
+
+            field.removeClass('is-invalid');
+
+            field.closest('.performance-input-box')
+                .find('.live-error')
+                .remove();
+
+            if (value === null || value === '') {
+
+                field.addClass('is-invalid');
+
+                field.closest('.performance-input-box')
+                    .append(
+                        '<small class="text-danger d-block mt-1 live-error">' +
+                        field.data('error') +
+                        '</small>'
+                    );
+            }
+
+        });
+    </script>
 @endsection

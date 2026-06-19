@@ -74,6 +74,7 @@
 
                                         <input type="text"
                                                name="task_title"
+                                               data-error="The task_title field is required."
                                                value="{{ old('task_title') }}"
                                                placeholder="Enter Task Title"
                                                class="form-control daily-create-input @error('task_title') is-invalid @enderror">
@@ -94,6 +95,7 @@
 
                                         <input type="number"
                                                step="0.1"
+                                               data-error="The hours_worked field is required."
                                                name="hours_worked"
                                                id="hours_worked"
                                                value="{{ old('hours_worked') }}"
@@ -116,6 +118,7 @@
 
                                         <input type="date"
                                                name="work_date"
+                                               data-error="The work_date field is required."
                                                value="{{ old('work_date') }}"
                                                class="form-control daily-create-input @error('work_date') is-invalid @enderror">
                                     </div>
@@ -135,6 +138,7 @@
                                         <i class="bi bi-person"></i>
 
                                         <select name="employee_id"
+                                                data-error="The employee name field is required."
                                                 class="form-select daily-create-input @error('employee_id') is-invalid @enderror">
 
                                             <option value="">Select Employee</option>
@@ -165,6 +169,7 @@
 
                                         <textarea name="task_description"
                                                   rows="5"
+
                                                   placeholder="Enter detailed task description..."
                                                   class="form-control daily-create-input @error('task_description') is-invalid @enderror">{{ old('task_description') }}</textarea>
                                     </div>
@@ -237,5 +242,26 @@
             });
         }
     </script>
+    <script>
+        $(document).on('input change', '[data-error]', function () {
 
+            let field = $(this);
+            let value = field.val();
+
+            field.removeClass('is-invalid');
+            field.closest('.col-md-6, .col-12').find('.live-error').remove();
+
+            if (value === null || value === '') {
+
+                field.addClass('is-invalid');
+
+                field.closest('.col-md-6, .col-12').append(
+                    '<small class="text-danger d-block mt-1 live-error">' +
+                    field.data('error') +
+                    '</small>'
+                );
+            }
+
+        });
+    </script>
 @endsection

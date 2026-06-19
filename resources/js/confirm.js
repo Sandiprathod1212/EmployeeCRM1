@@ -59,6 +59,45 @@ document.addEventListener('DOMContentLoaded', function () {
 
         e.preventDefault();
 
+        if (matchedClass === 'create-confirm') {
+
+            let isValid = true;
+
+            form.querySelectorAll('[data-error]').forEach(function (field) {
+
+                let value = field.value;
+                let parent = field.closest('.col-md-12, .col-md-8, .col-md-6, .col-md-4, .col-12');
+
+                field.classList.remove('is-invalid');
+
+                if (parent) {
+                    parent.querySelectorAll('.live-error').forEach(function (error) {
+                        error.remove();
+                    });
+                }
+
+                if (value === null || value.trim() === '') {
+
+                    isValid = false;
+
+                    field.classList.add('is-invalid');
+
+                    if (parent) {
+                        parent.insertAdjacentHTML(
+                            'beforeend',
+                            '<small class="text-danger d-block mt-1 live-error">' +
+                            field.dataset.error +
+                            '</small>'
+                        );
+                    }
+                }
+            });
+
+            if (!isValid) {
+                return;
+            }
+        }
+
         let config = {
             title: 'Are you sure?',
             text: 'Do you want to continue?',
@@ -139,11 +178,8 @@ document.addEventListener('DOMContentLoaded', function () {
         }).then(function (result) {
 
             if (result.isConfirmed) {
-
                 form.classList.remove(matchedClass);
-
                 form.submit();
-
             }
 
         });
